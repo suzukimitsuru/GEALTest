@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="GealResources">
+      <UniqueIdentifier>{ba207645-88b6-4249-9137-b79106af8eae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GealAPI">
+      <UniqueIdentifier>{5df998c3-5304-47fe-8632-5e925042cc29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TargetWin32">
+      <UniqueIdentifier>{797cbe05-48bf-4465-adb3-b6ddf41dba8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DynRscBitmap">
+      <UniqueIdentifier>{b2a63609-c9b1-4c36-ac94-1ddde887b965}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GealRsxBitmap.c">
+      <Filter>GealResources</Filter>
+    </ClCompile>
+    <ClCompile Include="GealRsxConfig.c">
+      <Filter>GealResources</Filter>
+    </ClCompile>
+    <ClCompile Include="GealRsxFont.c">
+      <Filter>GealResources</Filter>
+    </ClCompile>
+    <ClCompile Include="GealRsxString.c">
+      <Filter>GealResources</Filter>
+    </ClCompile>
+    <ClCompile Include="GealRsxUniconv.c">
+      <Filter>GealResources</Filter>
+    </ClCompile>
+    <ClCompile Include="GealRsxWidget.c">
+      <Filter>GealResources</Filter>
+    </ClCompile>
+    <ClCompile Include="TargetWin32\TargetDrawCLUT.c">
+      <Filter>TargetWin32</Filter>
+    </ClCompile>
+    <ClCompile Include="TargetWin32\TargetDrawRGB.c">
+      <Filter>TargetWin32</Filter>
+    </ClCompile>
+    <ClCompile Include="TargetWin32\TargetMain.c">
+      <Filter>TargetWin32</Filter>
+    </ClCompile>
+    <ClCompile Include="TargetWin32\TargetSystem.c">
+      <Filter>TargetWin32</Filter>
+    </ClCompile>
+    <ClCompile Include="DynRscBitmap\DynRscBitmapBMP.c">
+      <Filter>DynRscBitmap</Filter>
+    </ClCompile>
+    <ClCompile Include="SampleDev.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GealRsxConfig.h">
+      <Filter>GealResources</Filter>
+    </ClInclude>
+    <ClInclude Include="GealRsxEnum.h">
+      <Filter>GealResources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\GealAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\GealButtonAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\GealCommon.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\GealConfigAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\GealGaugeAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\GealLayerAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\GealListAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\GealMenuAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\GealTargetAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\GealTextAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\GealTimerAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\GealTypes.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\GealUtilAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\GealWidgetAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="TargetWin32\TargetTypes.h">
+      <Filter>TargetWin32</Filter>
+    </ClInclude>
+    <ClInclude Include="DynRscBitmap\DynRscBitmap.h">
+      <Filter>DynRscBitmap</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
