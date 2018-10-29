@@ -43,6 +43,7 @@
     <OutDir>Debug\</OutDir>
     <IntDir>Debug\</IntDir>
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>Release\</OutDir>
@@ -52,7 +53,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>C:\GEAL\include; ./; TargetWin32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\GEAL\include;./;./TargetWin32;./GealTest;C:\Program Files (x86)\Windows Kits\10\Include\10.0.17134.0\um;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -60,9 +61,10 @@
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>C:\Geal\lib\Win32\libGealEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>C:\Geal\lib\Win32\libGealEngine.lib;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.17134.0\um\x86\WS2_32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)SampleDev.exe</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)SampleDev.pdb</ProgramDatabaseFile>
@@ -101,6 +103,7 @@
     <ClCompile Include="GealRsxString.c" />
     <ClCompile Include="GealRsxUniconv.c" />
     <ClCompile Include="GealRsxWidget.c" />
+    <ClCompile Include="GealTest\GealTest.c" />
     <ClCompile Include="SampleDev.c" />
     <ClCompile Include="TargetWin32\TargetDrawCLUT.c" />
     <ClCompile Include="TargetWin32\TargetDrawRGB.c" />
@@ -125,6 +128,7 @@
     <ClInclude Include="DynRscBitmap\DynRscBitmap.h" />
     <ClInclude Include="GealRsxConfig.h" />
     <ClInclude Include="GealRsxEnum.h" />
+    <ClInclude Include="GealTest\GealTest.h" />
     <ClInclude Include="TargetWin32\TargetTypes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

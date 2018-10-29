@@ -13,6 +13,9 @@
     <Filter Include="DynRscBitmap">
       <UniqueIdentifier>{b2a63609-c9b1-4c36-ac94-1ddde887b965}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GealTest">
+      <UniqueIdentifier>{e7413e23-9e0d-4bae-bf2b-19c5393ca7eb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GealRsxBitmap.c">
@@ -49,6 +52,9 @@
       <Filter>DynRscBitmap</Filter>
     </ClCompile>
     <ClCompile Include="SampleDev.c" />
+    <ClCompile Include="GealTest\GealTest.c">
+      <Filter>GealTest</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GealRsxConfig.h">
@@ -104,6 +110,9 @@
     </ClInclude>
     <ClInclude Include="DynRscBitmap\DynRscBitmap.h">
       <Filter>DynRscBitmap</Filter>
+    </ClInclude>
+    <ClInclude Include="GealTest\GealTest.h">
+      <Filter>GealTest</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
