@@ -1,4 +1,12 @@
 {
     "files.encoding": "shiftjis",
-    "search.useIgnoreFiles": false
+    "search.useIgnoreFiles": false,
+    "C_Cpp.intelliSenseEngineFallback": "Enabled",
+    "C_Cpp.default.includePath": [
+        "~/Documents/GitHub/GEAL/include"
+    ],
+    "files.associations": {
+        "gtevent.h": "c",
+        "gealtypes.h": "c"
+    }
 }

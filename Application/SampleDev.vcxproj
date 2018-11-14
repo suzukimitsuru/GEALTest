@@ -75,7 +75,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\GEAL\include; ./; TargetWin32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\GEAL\include;./;./TargetWin32;./GealTest;C:\Program Files (x86)\Windows Kits\10\Include\10.0.17134.0\um;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader />
@@ -83,7 +83,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>C:\Geal\lib\Win32\libGealEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>C:\Geal\lib\Win32\libGealEngine.lib;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.17134.0\um\x86\WS2_32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)SampleDev.exe</OutputFile>
       <IgnoreSpecificDefaultLibraries>LIBCMTD;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -103,7 +103,8 @@
     <ClCompile Include="GealRsxString.c" />
     <ClCompile Include="GealRsxUniconv.c" />
     <ClCompile Include="GealRsxWidget.c" />
-    <ClCompile Include="GealTest\GealTest.c" />
+    <ClCompile Include="GealTest\GtEvent.c" />
+    <ClCompile Include="GealTest\GtUDPPort.c" />
     <ClCompile Include="SampleDev.c" />
     <ClCompile Include="TargetWin32\TargetDrawCLUT.c" />
     <ClCompile Include="TargetWin32\TargetDrawRGB.c" />
@@ -111,24 +112,30 @@
     <ClCompile Include="TargetWin32\TargetSystem.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\include\GealAPI.h" />
-    <ClInclude Include="..\..\..\include\GealButtonAPI.h" />
-    <ClInclude Include="..\..\..\include\GealCommon.h" />
-    <ClInclude Include="..\..\..\include\GealConfigAPI.h" />
-    <ClInclude Include="..\..\..\include\GealGaugeAPI.h" />
-    <ClInclude Include="..\..\..\include\GealLayerAPI.h" />
-    <ClInclude Include="..\..\..\include\GealListAPI.h" />
-    <ClInclude Include="..\..\..\include\GealMenuAPI.h" />
-    <ClInclude Include="..\..\..\include\GealTargetAPI.h" />
-    <ClInclude Include="..\..\..\include\GealTextAPI.h" />
-    <ClInclude Include="..\..\..\include\GealTimerAPI.h" />
-    <ClInclude Include="..\..\..\include\GealTypes.h" />
-    <ClInclude Include="..\..\..\include\GealUtilAPI.h" />
-    <ClInclude Include="..\..\..\include\GealWidgetAPI.h" />
+    <ClInclude Include="C:\GEAL\include\GealAPI.h" />
+    <ClInclude Include="C:\GEAL\include\GealCommon.h" />
+    <ClInclude Include="C:\GEAL\include\GealConfigAPI.h" />
+    <ClInclude Include="C:\GEAL\include\GealFigureAPI.h" />
+    <ClInclude Include="C:\GEAL\include\GealLayerAPI.h" />
+    <ClInclude Include="C:\GEAL\include\GealStringAPI.h" />
+    <ClInclude Include="C:\GEAL\include\GealTargetAPI.h" />
+    <ClInclude Include="C:\GEAL\include\GealTimerAPI.h" />
+    <ClInclude Include="C:\GEAL\include\GealTypes.h" />
+    <ClInclude Include="C:\GEAL\include\GealUtilAPI.h" />
+    <ClInclude Include="C:\GEAL\include\GealWButtonAPI.h" />
+    <ClInclude Include="C:\GEAL\include\GealWFigureAPI.h" />
+    <ClInclude Include="C:\GEAL\include\GealWGaugeAPI.h" />
+    <ClInclude Include="C:\GEAL\include\GealWidgetAPI.h" />
+    <ClInclude Include="C:\GEAL\include\GealWListAPI.h" />
+    <ClInclude Include="C:\GEAL\include\GealWMenuAPI.h" />
+    <ClInclude Include="C:\GEAL\include\GealWPictureAPI.h" />
+    <ClInclude Include="C:\GEAL\include\GealWRectAPI.h" />
+    <ClInclude Include="C:\GEAL\include\GealWTextAPI.h" />
     <ClInclude Include="DynRscBitmap\DynRscBitmap.h" />
     <ClInclude Include="GealRsxConfig.h" />
     <ClInclude Include="GealRsxEnum.h" />
-    <ClInclude Include="GealTest\GealTest.h" />
+    <ClInclude Include="GealTest\GtEvent.h" />
+    <ClInclude Include="GealTest\GtPort.h" />
     <ClInclude Include="TargetWin32\TargetTypes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -52,7 +52,10 @@
       <Filter>DynRscBitmap</Filter>
     </ClCompile>
     <ClCompile Include="SampleDev.c" />
-    <ClCompile Include="GealTest\GealTest.c">
+    <ClCompile Include="GealTest\GtEvent.c">
+      <Filter>GealTest</Filter>
+    </ClCompile>
+    <ClCompile Include="GealTest\GtUDPPort.c">
       <Filter>GealTest</Filter>
     </ClCompile>
   </ItemGroup>
@@ -63,55 +66,73 @@
     <ClInclude Include="GealRsxEnum.h">
       <Filter>GealResources</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\GealAPI.h">
-      <Filter>GealAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\GealButtonAPI.h">
-      <Filter>GealAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\GealCommon.h">
-      <Filter>GealAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\GealConfigAPI.h">
-      <Filter>GealAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\GealGaugeAPI.h">
-      <Filter>GealAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\GealLayerAPI.h">
-      <Filter>GealAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\GealListAPI.h">
-      <Filter>GealAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\GealMenuAPI.h">
-      <Filter>GealAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\GealTargetAPI.h">
-      <Filter>GealAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\GealTextAPI.h">
-      <Filter>GealAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\GealTimerAPI.h">
-      <Filter>GealAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\GealTypes.h">
-      <Filter>GealAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\GealUtilAPI.h">
-      <Filter>GealAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\GealWidgetAPI.h">
-      <Filter>GealAPI</Filter>
-    </ClInclude>
     <ClInclude Include="TargetWin32\TargetTypes.h">
       <Filter>TargetWin32</Filter>
     </ClInclude>
     <ClInclude Include="DynRscBitmap\DynRscBitmap.h">
       <Filter>DynRscBitmap</Filter>
     </ClInclude>
-    <ClInclude Include="GealTest\GealTest.h">
+    <ClInclude Include="GealTest\GtEvent.h">
+      <Filter>GealTest</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\GEAL\include\GealAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\GEAL\include\GealCommon.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\GEAL\include\GealConfigAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\GEAL\include\GealFigureAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\GEAL\include\GealLayerAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\GEAL\include\GealStringAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\GEAL\include\GealTargetAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\GEAL\include\GealTimerAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\GEAL\include\GealTypes.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\GEAL\include\GealUtilAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\GEAL\include\GealWButtonAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\GEAL\include\GealWFigureAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\GEAL\include\GealWGaugeAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\GEAL\include\GealWidgetAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\GEAL\include\GealWListAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\GEAL\include\GealWMenuAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\GEAL\include\GealWPictureAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\GEAL\include\GealWRectAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\GEAL\include\GealWTextAPI.h">
+      <Filter>GealAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="GealTest\GtPort.h">
       <Filter>GealTest</Filter>
     </ClInclude>
   </ItemGroup>
