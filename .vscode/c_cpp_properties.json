@@ -6,6 +6,9 @@
             "macFrameworkPath": [
                 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks"
             ],
+            "systemIncludePath": [
+                "~/Documents/GitHub/WindowsKits/10/Include/10.0.17134.0/um"
+            ],
             "includePath": [
                 "~/Documents/GitHub/GEAL/include"
             ],

@@ -2,11 +2,17 @@
     "files.encoding": "shiftjis",
     "search.useIgnoreFiles": false,
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
+    "C_Cpp.default.systemIncludePath": [
+        "~/Documents/GitHub/WindowsKits/10/Include/10.0.17134.0/um"
+    ],
     "C_Cpp.default.includePath": [
         "~/Documents/GitHub/GEAL/include"
     ],
     "files.associations": {
         "gtevent.h": "c",
-        "gealtypes.h": "c"
+        "gealtypes.h": "c",
+        "stdio.h": "c",
+        "winsock2.h": "c",
+        "gtpacket.h": "c"
     }
 }

@@ -13,9 +13,10 @@ extern "C" {		/* Assume C declarations for C++ */
 typedef struct {
 
 	/*	<summary>初期化</summary>
+		<parameter name="parameter">引数</parameter>
 		<return>エラーコード</return>
 	*/
-	int (*Initialize)(void);
+	int (*Initialize)(void *parameter);
 
 	/*	<summary>終了処理</summary>
 		<return>エラーコード</return>
@@ -23,10 +24,9 @@ typedef struct {
 	int (*Terminate)(void);
 
 	/*	<summary>ポートを開く</summary>
-		<parameter name="parameter">引数</parameter>
 		<return>エラーコード</return>
 	*/
-	int (*Open)(void *parameter);
+	int (*Open)(void);
 
 	/*	<summary>ポート閉じる</summary>
 		<return>エラーコード</return>
@@ -34,21 +34,18 @@ typedef struct {
 	int (*Close)(void);
 
 	/*	<summary>要求を受信</summary>
+		<parameter name="buffer">受信バッファ</parameter>
+		<parameter name="maxBytes">最大受信バイト数</parameter>
 		<return>受信バイト数(0:なし, ＞0:あり, ＜0:エラーコード)</return>
 	*/
-	int (*Receive)(void);
-
-	/*	<summary>受信データを返す</summary>
-		<return>受信データ</return>
-	*/
-	char* (*ReceiveData)(void);
+	int (*Receive)(unsigned char* buffer, int maxBytes);
 
 	/*	<summary>パケットを送信</summary>
 		<parameter name="packet">送信パケット</parameter>
 		<parameter name="bytes">送信バイト数</parameter>
 		<return>送信バイト数(0:なし, ＞0:あり, ＜0:エラーコード)</return>
 	*/
-	int (*Send)(char *packet, int bytes);
+	int (*Send)(unsigned char* packet, int bytes);
 } GT_PORT;
 
 #ifdef __cplusplus

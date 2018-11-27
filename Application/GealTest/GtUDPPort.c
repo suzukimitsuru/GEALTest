@@ -1,23 +1,37 @@
 /*	GEAL Test Server: UDPポート
 	Copyright (C) 2018 suzukimitsuru, on MIT Licensed.
 */
-#include <stdio.h>
-#include <winsock2.h>
-#include "GtPort.h"
+//警告	C4996	'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings	SampleDev	z : \ドキュメント\github\gealtest\application\gealtest\gtudpport.c	56
+#define _WINSOCK_DEPRECATED_NO_WARNINGS 1
 
-static WSADATA _wsaData;
-static SOCKET _sock;
-static char _receive[2048];
+#include <WinSock2.h>
+#include "GtPort.h"
+#include "GtUDPPort.h"
+
+static WSADATA _wsa;	// Windows Socket
+static SOCKET _sock;	// ソケット
+static struct sockaddr_in _wait;	// 受信待ちアドレス
+static struct sockaddr_in _to;		// 送信先アドレス
 
 /*	<summary>初期化</summary>
+	<parameter name="parameter">引数</parameter>
 	<return>エラーコード</return>
 */
-static int _Initialize(void) {
+static int _Initialize(void *parameter) {
 	int error = 0;
 
 	// Windowsソケットを準備
-	if (WSAStartup(MAKEWORD(2,0), &_wsaData) != 0) {
+	if (WSAStartup(MAKEWORD(2,0), &_wsa) != 0) {
 		error = -WSAGetLastError();
+	} else {
+		// アドレスの設定
+		GT_UDP_PARAMETER* param = (GT_UDP_PARAMETER*)parameter;
+		_wait.sin_family = AF_INET;
+		_wait.sin_port = htons(param->WaitPort);
+		_wait.sin_addr.S_un.S_addr = INADDR_ANY;
+		_to.sin_family = AF_INET;
+		_to.sin_port = htons(param->ToPort);
+		_to.sin_addr.S_un.S_addr = inet_addr(param->ToHost);
 	}
 	return error;
 }
@@ -36,25 +50,19 @@ static int _Terminate(void) {
 }
 
 /*	<summary>ポートを開く</summary>
-	<parameter name="parameter">引数</parameter>
 	<return>エラーコード</return>
 */
-static int _Open(void *parameter) {
+static int _Open(void) {
 	int error = 0;
-	int port = ((int*)parameter)[0];
 
 	// ソケットを開く
 	_sock = socket(AF_INET, SOCK_DGRAM, 0);
 	if (_sock == INVALID_SOCKET) {
 		error = -WSAGetLastError();
 	} else {
-
+		
 		// IPアドレスと結び付ける
-		struct sockaddr_in addr;
-		addr.sin_family = AF_INET;
-		addr.sin_port = htons(port);
-		addr.sin_addr.S_un.S_addr = INADDR_ANY;
-		if (bind(_sock, (struct sockaddr *)&addr, sizeof(addr)) != 0) {
+		if (bind(_sock, (struct sockaddr *)&_wait, sizeof(_wait)) != 0) {
 			error = -WSAGetLastError();
 		} else {
 
@@ -82,12 +90,12 @@ static int _Close(void) {
 }
 
 /*	<summary>要求を受信</summary>
+	<parameter name="buffer">受信バッファ</parameter>
+	<parameter name="maxBytes">最大受信バイト数</parameter>
 	<return>受信バイト数(0:なし, ＞0:あり, ＜0:エラーコード)</return>
 */
-static int _Receive(void) {
-	int bytes = 0;
-	memset(_receive, 0, sizeof(_receive));
-	bytes = recv(_sock, _receive, sizeof(_receive), 0);
+static int _Receive(unsigned char* buffer, int maxBytes) {
+	int bytes = recv(_sock, buffer, maxBytes, 0);
 	if (bytes < 1) {
 		int last_error = WSAGetLastError();
 		if (last_error == WSAEWOULDBLOCK) {
@@ -95,15 +103,10 @@ static int _Receive(void) {
 		} else {
 			bytes =  -last_error;
 		}
+	} else {
+		bytes = bytes;
 	}
 	return bytes;
-}
-
-/*	<summary>受信データを返す</summary>
-	<return>受信データ</return>
-*/
-char* _ReceiveData(void) {
-	return &_receive[0];
 }
 
 /*	<summary>パケットを送信</summary>
@@ -111,9 +114,9 @@ char* _ReceiveData(void) {
 	<parameter name="bytes">送信バイト数</parameter>
 	<return>送信バイト数(0:なし, ＞0:あり, ＜0:エラーコード)</return>
 */
-int _Send(char *packet, int bytes) {
+int _Send(unsigned char* packet, int bytes) {
 	int sended_bytes = 0;
-	sended_bytes = send(_sock, packet, bytes, 0);
+	sended_bytes = sendto(_sock, packet, bytes, 0, (struct sockaddr *)&_to, sizeof(_to));
 	if (sended_bytes < 1) {
 		sended_bytes = -WSAGetLastError();
 	}
@@ -122,4 +125,4 @@ int _Send(char *packet, int bytes) {
 
 /*	<summary>UDPポート構造体</summary>
 */
-GT_PORT GtUDPPort = { _Initialize, _Terminate, _Open, _Close, _Receive, _ReceiveData, _Send };
+GT_PORT GtUDPPort = { _Initialize, _Terminate, _Open, _Close, _Receive, _Send };

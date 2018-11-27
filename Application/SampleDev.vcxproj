@@ -55,7 +55,6 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>C:\GEAL\include;./;./TargetWin32;./GealTest;C:\Program Files (x86)\Windows Kits\10\Include\10.0.17134.0\um;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader />
@@ -104,6 +103,7 @@
     <ClCompile Include="GealRsxUniconv.c" />
     <ClCompile Include="GealRsxWidget.c" />
     <ClCompile Include="GealTest\GtEvent.c" />
+    <ClCompile Include="GealTest\GtRequest.c" />
     <ClCompile Include="GealTest\GtUDPPort.c" />
     <ClCompile Include="SampleDev.c" />
     <ClCompile Include="TargetWin32\TargetDrawCLUT.c" />
@@ -136,6 +136,8 @@
     <ClInclude Include="GealRsxEnum.h" />
     <ClInclude Include="GealTest\GtEvent.h" />
     <ClInclude Include="GealTest\GtPort.h" />
+    <ClInclude Include="GealTest\GtRequest.h" />
+    <ClInclude Include="GealTest\GtUDPPort.h" />
     <ClInclude Include="TargetWin32\TargetTypes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

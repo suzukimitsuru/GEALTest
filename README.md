@@ -1,5 +1,6 @@
 # GEALTest
 GEALのUIテストをPCとの通信で行います。
+(GEAL is product of IT Access.,Co.Ltd.)
 
 ~~~
 +-------------------+  +-------------------------+
@@ -36,19 +37,20 @@ C:\GEAL\projects\SampleDev を基にします。
 
 修正部分
 
-プロジェクトのプロパティに以下を追加してください。
+Visual Studio プロジェクトのプロパティに以下を追加してください。
 * インクルード： 「構成プロパティ」「C/C++」「全般」「追加のインクルード ディレクトリ」
-  ./GealTest;C:\Program Files (x86)\Windows Kits\10\Include\10.0.17134.0\um;
+*  -> ./GealTest;C:\Program Files (x86)\Windows Kits\10\Include\10.0.17134.0\um;
 * ライブラリ： 「構成プロパティ」「リンカー」「入力」「追加の依存ファイル」
-  C:\Program Files (x86)\Windows Kits\10\Lib\10.0.17134.0\um\x86\WS2_32.Lib;
+*  -> C:\Program Files (x86)\Windows Kits\10\Lib\10.0.17134.0\um\x86\WS2_32.Lib;
 
-既存ソースの以下を変更してください。 UGx*() -> UGt*()
+既存ソースの以下を変更してください。
+~~~
 SampleDev.c        サンプルアプリケーション
-  UGxAppInitialize89  -> UGtAppInitializez89
+  UGxAppInitialize()  -> UGtAppInitialize()
   UGxAppProcess()     -> UGtAppProcess()
   UGxStageEnter()     -> UGtStageEnter()
   UGxStageExit()      -> UGtStageExit()
   UGxLayerRender()    -> UGtLayerRender()
   UGtWidgetRender()   -> UGtWidgetRender()
-
+~~~
   GEALTest では、GEAL Timer API で ID 7 のタイマーを使います。

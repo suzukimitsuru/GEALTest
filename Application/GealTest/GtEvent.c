@@ -1,13 +1,16 @@
 /*	GEAL Test Server: イベント処理
 	Copyright (C) 2018 suzukimitsuru, on MIT Licensed.
 */
-#include "GealTypes.h"
+#include <memory.h>
 #include "GealTimerAPI.h"
 #include "GtEvent.h"
 #include "GtPort.h"
+#include "GtUDPPort.h"
+#include "GtRequest.h"
 
 extern GT_PORT GtUDPPort;
 static GT_PORT* _port = &GtUDPPort;
+static unsigned char _buffer[128];
 
 /*	<summary>アプリケーション初期化</summary>
 */
@@ -17,11 +20,15 @@ GE_VOID UGxAppInitialize() {
 	UGtAppInitialize();
 
 	// 通信ポートを起動
-	int port = 12345;
-	int error = _port->Initialize();
+	GT_UDP_PARAMETER param;
+	param.WaitPort = *(int*)"Gt"; // 29767:0x7447
+	param.ToHost = "127.0.0.1";
+	param.ToPort = *(int*)"GT"; // 21575:0x5447;
+	int error = _port->Initialize(&param);
 	if (error == 0) {
-		error = _port->Open(&port);
+		error = _port->Open();
 		if (error == 0) {
+			GtRequetInitialize();
 			GxTimerStart(ID_GEAL_TEST_TIMER, 100L);
 		}
 	}
@@ -39,8 +46,20 @@ GE_BOOL UGxAppProcess(GE_MSG* psMsg) {
 		switch (psMsg->wParam) {
 		case ID_GEAL_TEST_TIMER: {
 
-			// 要求を受信したら
-			_port->Receive();
+			// 受信したら、要求に蓄積する
+			memset(_buffer, 0, sizeof(_buffer));
+			int receives = _port->Receive(_buffer, sizeof(_buffer));
+			if (receives > 0) {
+				GtRequetPut(_buffer, receives);
+			}
+
+			// 要求が在れば、要求を実行する
+			short button_id;
+			int requests = GtRequetGet((unsigned char*)&button_id, sizeof(button_id));
+			if (requests > 0) {
+				psMsg->wMsg = eGEMSG_BUTTON_CLICK;
+				psMsg->wParam = button_id;
+			}
 			break;
 		}
 		default:
@@ -70,6 +89,7 @@ GE_VOID UGxAppFinalize() {
 	<parameter name="eStageID">ステージID</parameter>
 */
 GE_VOID UGxStageEnter(GE_ID eStageID) {
+	_port->Send((unsigned char*)&eStageID, sizeof(eStageID));
 	UGtStageEnter(eStageID);
 }
 

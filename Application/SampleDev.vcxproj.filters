@@ -58,6 +58,9 @@
     <ClCompile Include="GealTest\GtUDPPort.c">
       <Filter>GealTest</Filter>
     </ClCompile>
+    <ClCompile Include="GealTest\GtRequest.c">
+      <Filter>GealTest</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GealRsxConfig.h">
@@ -133,6 +136,12 @@
       <Filter>GealAPI</Filter>
     </ClInclude>
     <ClInclude Include="GealTest\GtPort.h">
+      <Filter>GealTest</Filter>
+    </ClInclude>
+    <ClInclude Include="GealTest\GtRequest.h">
+      <Filter>GealTest</Filter>
+    </ClInclude>
+    <ClInclude Include="GealTest\GtUDPPort.h">
       <Filter>GealTest</Filter>
     </ClInclude>
   </ItemGroup>
