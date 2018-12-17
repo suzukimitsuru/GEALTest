@@ -103,12 +103,12 @@ namespace GEALTest
                 }
                 catch (SocketException ex)
                 {
-                    Console.WriteLine("送信エラー({0}/{1})", ex.Message, ex.ErrorCode);
+                    Console.WriteLine("Send(): 送信エラー({0}/{1})", ex.Message, ex.ErrorCode);
                 }
                 catch (ObjectDisposedException ex)
                 {
                     // すでに閉じている時は終了
-                    Console.WriteLine("{0}は閉じられています。", ex.ObjectName);
+                    Console.WriteLine("Send(): {0}は閉じられています。", ex.ObjectName);
                     this._client = null;
                 }
             }, this._client);
@@ -123,31 +123,28 @@ namespace GEALTest
             UdpClient udp = (UdpClient)ar.AsyncState;
 
             // 非同期受信を終了する
-            IPEndPoint end_point = null;
+            IPEndPoint from = null;
             byte[] receive_data = { };
             try
             {
-                receive_data = udp.EndReceive(ar, ref end_point);
+                receive_data = udp.EndReceive(ar, ref from);
             }
             catch (SocketException ex)
             {
-                Console.WriteLine("受信エラー({0}/{1})", ex.Message, ex.ErrorCode);
+                Console.WriteLine("_receiveCallback(): 受信エラー({0}/{1})", ex.Message, ex.ErrorCode);
             }
             catch (ObjectDisposedException ex)
             {
                 // すでに閉じている時は終了
-                Console.WriteLine("{0}は閉じられています。", ex.ObjectName);
+                Console.WriteLine("_receiveCallback(): {0}は閉じられています。", ex.ObjectName);
                 this._client = null;
             }
             if (receive_data.Length > 0)
             {
                 // 受信データを蓄積
                 this._receiveList.Add(receive_data);
-
-                // 受信データを表示
-                var hex = ""; foreach (var data in receive_data) hex += string.Format("{0:X2}", data);
-                Console.WriteLine("[{0} ({1})] > {2}", end_point.Address, end_point.Port, hex.Trim());
             }
+
             // 再びデータ受信を開始する
             if (this._client != null)
             {
@@ -166,6 +163,7 @@ namespace GEALTest
             {
                 result = this._receiveList[0];
                 this._receiveList.RemoveAt(0);
+                result = (result is null) ? new byte[] { } : result;
             }
             return result;
         }

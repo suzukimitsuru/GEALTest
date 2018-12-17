@@ -11,6 +11,8 @@ namespace GEALTest
 
 #region クラス操作
 
+        public UDPPort port { get { return this._port; } }
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -66,10 +68,9 @@ namespace GEALTest
         /// ボタンを押す
         /// </summary>
         /// <param name="button">ボタン</param>
-        public void ButtonPush(ButtonEnum button)
+        public void ButtonPush(uint button)
         {
             this._port.Send(BitConverter.GetBytes((Int16)button));
-
         }
 
         /// <summary>
@@ -78,16 +79,16 @@ namespace GEALTest
         /// <param name="stage">開始待ちステージ</param>
         /// <param name="milliseconds">待ちミリ秒</param>
         /// /// <returns>開始したステージ</returns>
-        public StageEnum StageWait(StageEnum stage, long milliseconds)
+        public uint StageWait(uint stage, long milliseconds)
         {
-            StageEnum started = StageEnum.Nothig;
+            uint started = 0;
             long wait_ticks = milliseconds * TimeSpan.TicksPerMillisecond;
             for (var begin = DateTime.Now; (DateTime.Now - begin).Ticks < wait_ticks;)
             {
                 var received = this._port.Receive();
                 if (received.Length > 0)
                 {
-                    started = (StageEnum)BitConverter.ToInt16(received, 0);
+                    started = BitConverter.ToUInt16(received, 0);
                     begin = DateTime.Now - new TimeSpan(wait_ticks);
                 }
             }
@@ -95,7 +96,5 @@ namespace GEALTest
         }
 
         #endregion 要求操作
-
-
     }
 }

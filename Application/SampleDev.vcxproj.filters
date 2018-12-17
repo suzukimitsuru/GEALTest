@@ -13,7 +13,7 @@
     <Filter Include="DynRscBitmap">
       <UniqueIdentifier>{b2a63609-c9b1-4c36-ac94-1ddde887b965}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GealTest">
+    <Filter Include="GEALTestServer">
       <UniqueIdentifier>{e7413e23-9e0d-4bae-bf2b-19c5393ca7eb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -52,14 +52,14 @@
       <Filter>DynRscBitmap</Filter>
     </ClCompile>
     <ClCompile Include="SampleDev.c" />
-    <ClCompile Include="GealTest\GtEvent.c">
-      <Filter>GealTest</Filter>
+    <ClCompile Include="GEALTestServer\GtEvent.c">
+      <Filter>GEALTestServer</Filter>
     </ClCompile>
-    <ClCompile Include="GealTest\GtUDPPort.c">
-      <Filter>GealTest</Filter>
+    <ClCompile Include="GEALTestServer\GtUDPPort.c">
+      <Filter>GEALTestServer</Filter>
     </ClCompile>
-    <ClCompile Include="GealTest\GtRequest.c">
-      <Filter>GealTest</Filter>
+    <ClCompile Include="GEALTestServer\GtRequest.c">
+      <Filter>GEALTestServer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -75,8 +75,8 @@
     <ClInclude Include="DynRscBitmap\DynRscBitmap.h">
       <Filter>DynRscBitmap</Filter>
     </ClInclude>
-    <ClInclude Include="GealTest\GtEvent.h">
-      <Filter>GealTest</Filter>
+    <ClInclude Include="GEALTestServer\GtEvent.h">
+      <Filter>GEALTestServer</Filter>
     </ClInclude>
     <ClInclude Include="C:\GEAL\include\GealAPI.h">
       <Filter>GealAPI</Filter>
@@ -135,14 +135,17 @@
     <ClInclude Include="C:\GEAL\include\GealWTextAPI.h">
       <Filter>GealAPI</Filter>
     </ClInclude>
-    <ClInclude Include="GealTest\GtPort.h">
-      <Filter>GealTest</Filter>
+    <ClInclude Include="GEALTestServer\GtPort.h">
+      <Filter>GEALTestServer</Filter>
     </ClInclude>
-    <ClInclude Include="GealTest\GtRequest.h">
-      <Filter>GealTest</Filter>
+    <ClInclude Include="GEALTestServer\GtRequest.h">
+      <Filter>GEALTestServer</Filter>
     </ClInclude>
-    <ClInclude Include="GealTest\GtUDPPort.h">
-      <Filter>GealTest</Filter>
+    <ClInclude Include="GEALTestServer\GtUDPPort.h">
+      <Filter>GEALTestServer</Filter>
+    </ClInclude>
+    <ClInclude Include="GEALTestServer\GtOptions.h">
+      <Filter>GEALTestServer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

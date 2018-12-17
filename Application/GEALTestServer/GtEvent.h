@@ -10,8 +10,6 @@ extern "C" {		/* Assume C declarations for C++ */
 
 #include "GealTypes.h"
 
-#define ID_GEAL_TEST_TIMER	(7)	// 通信タイマー
-
 /*	<summary>アプリケーション初期化</summary>
 */
 extern GE_VOID UGtAppInitialize(GE_VOID);

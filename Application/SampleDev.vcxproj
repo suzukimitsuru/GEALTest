@@ -53,8 +53,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>C:\GEAL\include;./;./TargetWin32;./GealTest;C:\Program Files (x86)\Windows Kits\10\Include\10.0.17134.0\um;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\GEAL\include;./;./TargetWin32;./GEALTestServer;C:\Program Files (x86)\Windows Kits\10\Include\10.0.17134.0\um;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_GEAL_TEST_SERVER;WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader />
@@ -74,8 +74,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\GEAL\include;./;./TargetWin32;./GealTest;C:\Program Files (x86)\Windows Kits\10\Include\10.0.17134.0\um;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\GEAL\include;./;./TargetWin32;./GEALTestServer;C:\Program Files (x86)\Windows Kits\10\Include\10.0.17134.0\um;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_GEAL_TEST_SERVER;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
@@ -102,9 +102,9 @@
     <ClCompile Include="GealRsxString.c" />
     <ClCompile Include="GealRsxUniconv.c" />
     <ClCompile Include="GealRsxWidget.c" />
-    <ClCompile Include="GealTest\GtEvent.c" />
-    <ClCompile Include="GealTest\GtRequest.c" />
-    <ClCompile Include="GealTest\GtUDPPort.c" />
+    <ClCompile Include="GEALTestServer\GtEvent.c" />
+    <ClCompile Include="GEALTestServer\GtRequest.c" />
+    <ClCompile Include="GEALTestServer\GtUDPPort.c" />
     <ClCompile Include="SampleDev.c" />
     <ClCompile Include="TargetWin32\TargetDrawCLUT.c" />
     <ClCompile Include="TargetWin32\TargetDrawRGB.c" />
@@ -134,10 +134,11 @@
     <ClInclude Include="DynRscBitmap\DynRscBitmap.h" />
     <ClInclude Include="GealRsxConfig.h" />
     <ClInclude Include="GealRsxEnum.h" />
-    <ClInclude Include="GealTest\GtEvent.h" />
-    <ClInclude Include="GealTest\GtPort.h" />
-    <ClInclude Include="GealTest\GtRequest.h" />
-    <ClInclude Include="GealTest\GtUDPPort.h" />
+    <ClInclude Include="GEALTestServer\GtEvent.h" />
+    <ClInclude Include="GEALTestServer\GtOptions.h" />
+    <ClInclude Include="GEALTestServer\GtPort.h" />
+    <ClInclude Include="GEALTestServer\GtRequest.h" />
+    <ClInclude Include="GEALTestServer\GtUDPPort.h" />
     <ClInclude Include="TargetWin32\TargetTypes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

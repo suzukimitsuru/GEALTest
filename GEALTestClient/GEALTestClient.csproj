@@ -41,9 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Application\GEALTestServer\GtRequest.cs" />
     <Compile Include="UDPPort.cs" />
     <Compile Include="Client.cs" />
-    <Compile Include="GealRsx.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
