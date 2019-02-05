@@ -1,31 +1,39 @@
-ï»¿using System;
+using System;
 
 namespace GEALTest
 {
     public class Client : IDisposable
     {
         /// <summary>
-        /// UDPãƒãƒ¼ãƒˆ
+        /// UDPƒ|[ƒg
         /// </summary>
         private UDPPort _port = null;
 
-#region ã‚¯ãƒ©ã‚¹æ“ä½œ
+        /// <summary>
+        /// —v‹Hê
+        /// </summary>
+        RequestFactory _factory;
 
-        public UDPPort port { get { return this._port; } }
+#region ƒvƒƒpƒeƒB
+        public bool IsOpened { get { return this._port.IsOpened; } }
+#endregion ƒvƒƒpƒeƒB
+
+        #region ƒNƒ‰ƒX‘€ì
 
         /// <summary>
-        /// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+        /// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
         /// </summary>
-        /// <param name="port">é€šä¿¡ãƒãƒ¼ãƒˆ</param>
-        public Client(UDPPort port)
+        /// <param name="port">’ÊMƒ|[ƒg</param>
+        /// <param name="factory">—v‹Hê</param>
+        public Client(UDPPort port, RequestFactory factory)
         {
-            // é€šä¿¡é–‹å§‹
+            this._factory = factory;
             this._port = port;
             this._port.Open();
         }
 
         #region IDisposable Support
-        private bool disposedValue = false; // é‡è¤‡ã™ã‚‹å‘¼ã³å‡ºã—ã‚’æ¤œå‡ºã™ã‚‹ã«ã¯
+        private bool disposedValue = false; // d•¡‚·‚éŒÄ‚Ño‚µ‚ğŒŸo‚·‚é‚É‚Í
 
         protected virtual void Dispose(bool disposing)
         {
@@ -33,68 +41,83 @@ namespace GEALTest
             {
                 if (disposing)
                 {
-                    // TODO: ãƒãƒãƒ¼ã‚¸ãƒ‰çŠ¶æ…‹ã‚’ç ´æ£„ã—ã¾ã™ (ãƒãƒãƒ¼ã‚¸ãƒ‰ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ)ã€‚
+                    // ƒ}ƒl[ƒWƒhó‘Ô‚ğ”jŠü‚µ‚Ü‚· (ƒ}ƒl[ƒWƒh ƒIƒuƒWƒFƒNƒg)B
                     this._port = null;
+                    this._factory = null;
                 }
 
-                // TODO: ã‚¢ãƒ³ãƒãƒãƒ¼ã‚¸ãƒ‰ ãƒªã‚½ãƒ¼ã‚¹ (ã‚¢ãƒ³ãƒãƒãƒ¼ã‚¸ãƒ‰ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ) ã‚’è§£æ”¾ã—ã€ä¸‹ã®ãƒ•ã‚¡ã‚¤ãƒŠãƒ©ã‚¤ã‚¶ãƒ¼ã‚’ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ã—ã¾ã™ã€‚
-                // TODO: å¤§ããªãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’ null ã«è¨­å®šã—ã¾ã™ã€‚
+                // ƒAƒ“ƒ}ƒl[ƒWƒh ƒŠƒ\[ƒX (ƒAƒ“ƒ}ƒl[ƒWƒh ƒIƒuƒWƒFƒNƒg) ‚ğ‰ğ•ú‚µA‰º‚Ìƒtƒ@ƒCƒiƒ‰ƒCƒU[‚ğƒI[ƒo[ƒ‰ƒCƒh‚µ‚Ü‚·B
+                // ‘å‚«‚ÈƒtƒB[ƒ‹ƒh‚ğ null ‚Éİ’è‚µ‚Ü‚·B
 
                 disposedValue = true;
             }
         }
 
-        // TODO: ä¸Šã® Dispose(bool disposing) ã«ã‚¢ãƒ³ãƒãƒãƒ¼ã‚¸ãƒ‰ ãƒªã‚½ãƒ¼ã‚¹ã‚’è§£æ”¾ã™ã‚‹ã‚³ãƒ¼ãƒ‰ãŒå«ã¾ã‚Œã‚‹å ´åˆã«ã®ã¿ã€ãƒ•ã‚¡ã‚¤ãƒŠãƒ©ã‚¤ã‚¶ãƒ¼ã‚’ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ã—ã¾ã™ã€‚
+        // ã‚Ì Dispose(bool disposing) ‚ÉƒAƒ“ƒ}ƒl[ƒWƒh ƒŠƒ\[ƒX‚ğ‰ğ•ú‚·‚éƒR[ƒh‚ªŠÜ‚Ü‚ê‚éê‡‚É‚Ì‚İAƒtƒ@ƒCƒiƒ‰ƒCƒU[‚ğƒI[ƒo[ƒ‰ƒCƒh‚µ‚Ü‚·B
         // ~Client() {
-        //   // ã“ã®ã‚³ãƒ¼ãƒ‰ã‚’å¤‰æ›´ã—ãªã„ã§ãã ã•ã„ã€‚ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒƒãƒ— ã‚³ãƒ¼ãƒ‰ã‚’ä¸Šã® Dispose(bool disposing) ã«è¨˜è¿°ã—ã¾ã™ã€‚
+        //   // ‚±‚ÌƒR[ƒh‚ğ•ÏX‚µ‚È‚¢‚Å‚­‚¾‚³‚¢BƒNƒŠ[ƒ“ƒAƒbƒv ƒR[ƒh‚ğã‚Ì Dispose(bool disposing) ‚É‹Lq‚µ‚Ü‚·B
         //   Dispose(false);
         // }
 
-        // ã“ã®ã‚³ãƒ¼ãƒ‰ã¯ã€ç ´æ£„å¯èƒ½ãªãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’æ­£ã—ãå®Ÿè£…ã§ãã‚‹ã‚ˆã†ã«è¿½åŠ ã•ã‚Œã¾ã—ãŸã€‚
+        // ‚±‚ÌƒR[ƒh‚ÍA”jŠü‰Â”\‚Èƒpƒ^[ƒ“‚ğ³‚µ‚­À‘•‚Å‚«‚é‚æ‚¤‚É’Ç‰Á‚³‚ê‚Ü‚µ‚½B
         void IDisposable.Dispose()
         {
-            // ã“ã®ã‚³ãƒ¼ãƒ‰ã‚’å¤‰æ›´ã—ãªã„ã§ãã ã•ã„ã€‚ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒƒãƒ— ã‚³ãƒ¼ãƒ‰ã‚’ä¸Šã® Dispose(bool disposing) ã«è¨˜è¿°ã—ã¾ã™ã€‚
+            // ‚±‚ÌƒR[ƒh‚ğ•ÏX‚µ‚È‚¢‚Å‚­‚¾‚³‚¢BƒNƒŠ[ƒ“ƒAƒbƒv ƒR[ƒh‚ğã‚Ì Dispose(bool disposing) ‚É‹Lq‚µ‚Ü‚·B
             Dispose(true);
-            // TODO: ä¸Šã®ãƒ•ã‚¡ã‚¤ãƒŠãƒ©ã‚¤ã‚¶ãƒ¼ãŒã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ã•ã‚Œã‚‹å ´åˆã¯ã€æ¬¡ã®è¡Œã®ã‚³ãƒ¡ãƒ³ãƒˆã‚’è§£é™¤ã—ã¦ãã ã•ã„ã€‚
+            // TODO: ã‚Ìƒtƒ@ƒCƒiƒ‰ƒCƒU[‚ªƒI[ƒo[ƒ‰ƒCƒh‚³‚ê‚éê‡‚ÍAŸ‚Ìs‚ÌƒRƒƒ“ƒg‚ğ‰ğœ‚µ‚Ä‚­‚¾‚³‚¢B
             // GC.SuppressFinalize(this);
         }
         #endregion IDisposable Support
 
-        #endregion ã‚¯ãƒ©ã‚¹æ“ä½œ
+#endregion ƒNƒ‰ƒX‘€ì
 
-#region è¦æ±‚æ“ä½œ
+#region —v‹‘€ì
 
         /// <summary>
-        /// ãƒœã‚¿ãƒ³ã‚’æŠ¼ã™
+        /// —v‹‚ğóM‚·‚é
         /// </summary>
-        /// <param name="button">ãƒœã‚¿ãƒ³</param>
-        public void ButtonPush(uint button)
+        /// <returns></returns>
+        public RequestBase Receive()
         {
-            this._port.Send(BitConverter.GetBytes((Int16)button));
+            var received = this._port.Receive();
+            return this._factory.GetRequest(received);
         }
 
         /// <summary>
-        /// ã‚¹ãƒ†ãƒ¼ã‚¸é–‹å§‹ã‚’å¾…ã¤
+        /// —v‹‚ğs‚¤
         /// </summary>
-        /// <param name="stage">é–‹å§‹å¾…ã¡ã‚¹ãƒ†ãƒ¼ã‚¸</param>
-        /// <param name="milliseconds">å¾…ã¡ãƒŸãƒªç§’</param>
-        /// /// <returns>é–‹å§‹ã—ãŸã‚¹ãƒ†ãƒ¼ã‚¸</returns>
-        public uint StageWait(uint stage, long milliseconds)
+        /// <param name="request">—v‹</param>
+        public void Operation(RequestBase request)
         {
-            uint started = 0;
+            this._port.Send(request.GetBytes());
+        }
+
+        /// <summary>
+        /// —v‹‚ğ‘Ò‚Â
+        /// </summary>
+        /// <param name="wait">‘Ò‚Â—v‹</param>
+        /// <param name="milliseconds">‘Ò‚¿ƒ~ƒŠ•b</param>
+        /// /// <returns>óM‚µ‚½—v‹</returns>
+        public RequestBase Wait(RequestBase wait, long milliseconds)
+        {
+            RequestBase received = null;
+            RequestBase waited = null;
             long wait_ticks = milliseconds * TimeSpan.TicksPerMillisecond;
-            for (var begin = DateTime.Now; (DateTime.Now - begin).Ticks < wait_ticks;)
+            var begin = DateTime.Now;
+            while (((DateTime.Now - begin).Ticks < wait_ticks) && this.IsOpened && (!wait.Equals(received)))
             {
-                var received = this._port.Receive();
-                if (received.Length > 0)
-                {
-                    started = BitConverter.ToUInt16(received, 0);
-                    begin = DateTime.Now - new TimeSpan(wait_ticks);
-                }
+                var receiving = this.Receive();
+                received = (receiving != null) ? receiving : received;
+                waited = ((receiving != null) && (receiving.Operation == wait.Operation)) ? receiving : waited;
+/*                if (received != null)
+                    Console.WriteLine("received {0}", received.ToLogText());
+                if (waited != null)
+                    Console.WriteLine("waited {0}", waited.ToLogText());*/
             }
-            return started;
+            var result = (waited != null) ? waited : received;
+            return (result == null) ? new NoOperation() : result;
         }
 
-        #endregion è¦æ±‚æ“ä½œ
+#endregion —v‹‘€ì
     }
 }

@@ -64,7 +64,7 @@ static int ringPut(unsigned char* receiveData, int receiveBytes) {
 static int ringBytesPeek() {
 	int result = 0;
 	if (_ringCount >= 0) {
-		int requresultest_bytes = ((GT_REQUEST_BASE*)&_ringBuffer[_ringGet])->bytes;
+		result = ((GT_REQUEST_BASE*)&_ringBuffer[_ringGet])->bytes + 1;
 	}
 	return result;
 }
@@ -77,7 +77,7 @@ static int ringBytesPeek() {
 static int ringGet(unsigned char* request, int maxBytes) {
 	int result = 0;
 	if (_ringCount >= 0) {
-		int request_bytes = ((GT_REQUEST_BASE*)&_ringBuffer[_ringGet])->bytes;
+		int request_bytes = ((GT_REQUEST_BASE*)&_ringBuffer[_ringGet])->bytes + 1;
 		if (_ringCount >= request_bytes) {
 			for (int index = 0; (index < request_bytes) && (index < maxBytes); index++) {
 				request[index] = _ringBuffer[_ringGet];
@@ -95,9 +95,6 @@ static int ringGet(unsigned char* request, int maxBytes) {
 GE_VOID UGxAppInitialize() {
 	_options = UGtSetOptions();
 
-	// アプリケーション初期化
-	UGtAppInitialize();
-
 	// 通信ポートを起動
 	int error = _port->Initialize(&_options->udp);
 	if (error == 0) {
@@ -109,11 +106,14 @@ GE_VOID UGxAppInitialize() {
 			// 記録メッセージ送信
 			if (_options->RecoardMode) {
 				GT_REQUEST_PARAMTER req;
-				GtRequetParameterSet(&req, oteEvent_UGxAppInitialize, tteNothing, 0, GEAL_VERSION);
+				GtRequetParameterSet(&req, opeUGxAppInitialize, tteNoTarget, 0, GEAL_VERSION);
 				_port->Send((unsigned char*)&req, sizeof(req));
 			}
 		}
 	}
+
+	// アプリケーション初期化
+	UGtAppInitialize();
 }
 
 /*	<summary>アプリケーション処理</summary>
@@ -121,18 +121,18 @@ GE_VOID UGxAppInitialize() {
 	<return>処理済みフラグ</return>
 */
 GE_BOOL UGxAppProcess(GE_MSG* psMsg) {
-	enum OperationEnum operation = oteNothing;
+	enum OperationEnum operation = opeNoOperation;
 	enum TargetTypeEnum target = tteWIDGET;
 	int request = 0;
 
 	// 通信タイマーなら
 	switch (psMsg->wMsg) {
-	case eGEMSG_BUTTON_DOWN:	operation = oteMessage_BUTTON_DOWN;		target = tteWIDGET;	request = 1;	break;
-	case eGEMSG_BUTTON_CLICK:	operation = oteMessage_BUTTON_CLICK;	target = tteWIDGET;	request = 1;	break;
-	case eGEMSG_LISTITEM_DOWN:	operation = oteMessage_LISTITEM_DOWN;	target = tteWIDGET;	request = 2;	break;
-	case eGEMSG_LISTBAR_DOWN:	operation = oteMessage_LISTBAR_DOWN;	target = tteWIDGET;	request = 2;	break;
-	case eGEMSG_MENUITEM_DOWN:	operation = oteMessage_MENUITEM_DOWN;	target = tteWIDGET;	request = 2;	break;
-	case eGEMSG_USEREVENT:		operation = oteMessage_USEREVENT;		target = tteEVENT;	request = 2;	break;
+	case eGEMSG_BUTTON_DOWN:	operation = opeBUTTON_DOWN;		target = tteWIDGET;	request = 1;	break;
+	case eGEMSG_BUTTON_CLICK:	operation = opeBUTTON_CLICK;	target = tteWIDGET;	request = 1;	break;
+	case eGEMSG_LISTITEM_DOWN:	operation = opeLISTITEM_DOWN;	target = tteWIDGET;	request = 2;	break;
+	case eGEMSG_LISTBAR_DOWN:	operation = opeLISTBAR_DOWN;	target = tteWIDGET;	request = 2;	break;
+	case eGEMSG_MENUITEM_DOWN:	operation = opeMENUITEM_DOWN;	target = tteWIDGET;	request = 2;	break;
+	case eGEMSG_USEREVENT:		operation = opeUSEREVENT;		target = tteEVENT;	request = 2;	break;
 	case eGEMSG_TIMER_UPDATE:
 		if (psMsg->wParam == _options->timerId) {
 
@@ -161,13 +161,13 @@ GE_BOOL UGxAppProcess(GE_MSG* psMsg) {
 				unsigned short message = 0;
 				enum OperationEnum operation = request.base.operation;
 				switch (operation) {
-					case oteMessage_BUTTON_DOWN:	message = oteMessage_BUTTON_DOWN;	break;
-					case oteMessage_BUTTON_CLICK:	message = eGEMSG_BUTTON_CLICK;		break;
-					case oteMessage_LISTITEM_DOWN:	message = eGEMSG_LISTITEM_DOWN;		break;
-					case oteMessage_LISTBAR_DOWN:	message = eGEMSG_LISTBAR_DOWN;		break;
-					case oteMessage_MENUITEM_DOWN:	message = eGEMSG_MENUITEM_DOWN;		break;
-					case oteMessage_USEREVENT:		message = eGEMSG_USEREVENT;			break;
-					default:						message = 0;						break;
+					case opeBUTTON_DOWN:	message = eGEMSG_BUTTON_DOWN;	break;
+					case opeBUTTON_CLICK:	message = eGEMSG_BUTTON_CLICK;	break;
+					case opeLISTITEM_DOWN:	message = eGEMSG_LISTITEM_DOWN;	break;
+					case opeLISTBAR_DOWN:	message = eGEMSG_LISTBAR_DOWN;	break;
+					case opeMENUITEM_DOWN:	message = eGEMSG_MENUITEM_DOWN;	break;
+					case opeUSEREVENT:		message = eGEMSG_USEREVENT;		break;
+					default:				message = 0;					break;
 				}
 				if (message > 0) {
 					psMsg->wMsg = message;
@@ -176,11 +176,14 @@ GE_BOOL UGxAppProcess(GE_MSG* psMsg) {
 				}
 			}
 		}
+		else {
+			operation = opeTIMER_UPDATE;	target = tteNoTarget;	request = 2;
+		}
 		break;
 	}
 
 	// 記録メッセージ送信
-	if (_options->RecoardMode && (operation != oteNothing)) {
+	if (_options->RecoardMode && (operation != opeNoOperation)) {
 		switch (request) {
 			case 1: {
 				GT_REQUEST_BASE req;
@@ -208,7 +211,7 @@ GE_VOID UGxAppFinalize() {
 	// 記録メッセージ送信
 	if (_options->RecoardMode) {
 		GT_REQUEST_BASE req;
-		GtRequetBaseSet(&req, oteEvent_UGxAppFinalize, tteNothing, 0);
+		GtRequetBaseSet(&req, opeUGxAppFinalize, tteNoTarget, 0);
 		_port->Send((unsigned char*)&req, sizeof(req));
 	}
 
@@ -229,7 +232,7 @@ GE_VOID UGxStageEnter(GE_ID eStageID) {
 	// 記録メッセージ送信
 	if (_options->RecoardMode) {
 		GT_REQUEST_BASE req;
-		GtRequetBaseSet(&req, oteEvent_UGxStageEnter, tteSTAGE, eStageID);
+		GtRequetBaseSet(&req, opeUGxStageEnter, tteSTAGE, eStageID);
 		_port->Send((unsigned char*)&req, sizeof(req));
 	}
 	// ステージ開始
@@ -244,7 +247,7 @@ GE_VOID UGxStageExit(GE_ID eStageID) {
 	// 記録メッセージ送信
 	if (_options->RecoardMode) {
 		GT_REQUEST_BASE req;
-		GtRequetBaseSet(&req, oteEvent_UGxStageExit, tteSTAGE, eStageID);
+		GtRequetBaseSet(&req, opeUGxStageExit, tteSTAGE, eStageID);
 		_port->Send((unsigned char*)&req, sizeof(req));
 	}
 
@@ -262,7 +265,7 @@ GE_BOOL UGxLayerRender(HTARGET hTarget, GE_ID eLayerID) {
 	// 記録メッセージ送信
 	if (_options->RecoardMode) {
 		GT_REQUEST_BASE req;
-		GtRequetBaseSet(&req, oteEvent_UGxLayerRender, tteLAYER, eLayerID);
+		GtRequetBaseSet(&req, opeUGxLayerRender, tteLAYER, eLayerID);
 		_port->Send((unsigned char*)&req, sizeof(req));
 	}
 
@@ -282,7 +285,7 @@ GE_BOOL UGxWidgetRender(HTARGET hTarget, GE_POINT sOffset, GE_ID eWidgetID) {
 	if (_options->RecoardMode) {
 		GT_REQUEST_PARAMTER req;
 		unsigned int param = (sOffset.y << 16) + sOffset.x;
-		GtRequetParameterSet(&req, oteEvent_UGxWidgetRender, tteWIDGET, eWidgetID, param);
+		GtRequetParameterSet(&req, opeUGxWidgetRender, tteWIDGET, eWidgetID, param);
 		_port->Send((unsigned char*)&req, sizeof(req));
 	}
 

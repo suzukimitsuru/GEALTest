@@ -11,49 +11,32 @@ extern "C" {		/* Assume C declarations for C++ */
 	/*	<summary>操作型列挙型</summary>
 	*/
 	enum OperationEnum {
-		oteNothing = 0,
+		opeNoOperation = 0,
 		// Event       S->C
-		oteEvent_UGxAppInitialize = 0x0101,	// GE_VOID UGtAppInitialize(GE_VOID);
-		oteEvent_UGxAppFinalize = 0x0102,	// GE_VOID UGtAppFinalize(GE_VOID);
-		oteEvent_UGxStageEnter = 0x0103,	// GE_VOID UGtStageEnter(GE_ID eStageID);
-		oteEvent_UGxStageExit = 0x0104,		// GE_VOID UGtStageExit(GE_ID eStageID);
-		oteEvent_UGxLayerRender = 0x0105,	// GE_BOOL UGtLayerRender(HTARGET hTarget, GE_ID eLayerID);
-		oteEvent_UGxWidgetRender = 0x0106,	// GE_BOOL UGtWidgetRender(HTARGET hTarget, GE_POINT sOffset, GE_ID eWidgetID);
+		opeUGxAppInitialize = 0x0101,	// GE_VOID UGtAppInitialize(GE_VOID);
+		opeUGxAppFinalize = 0x0102,		// GE_VOID UGtAppFinalize(GE_VOID);
+		opeUGxStageEnter = 0x0103,		// GE_VOID UGtStageEnter(GE_ID eStageID);
+		opeUGxStageExit = 0x0104,		// GE_VOID UGtStageExit(GE_ID eStageID);
+		opeUGxLayerRender = 0x0105,		// GE_BOOL UGtLayerRender(HTARGET hTarget, GE_ID eLayerID);
+		opeUGxWidgetRender = 0x0106,	// GE_BOOL UGtWidgetRender(HTARGET hTarget, GE_POINT sOffset, GE_ID eWidgetID);
 		// Message     S<->C GE_BOOL UGtAppProcess(GE_MSG* psMsg);
-		oteMessage_MOUSEDOWN = 0x0201,		// eGEMSG_MOUSEDOWN                             dwParam 上位16bit:垂直座標 下位16bit:水平座標
-		oteMessage_MOUSEUP = 0x0202,		// eGEMSG_MOUSEUP                               dwParam 上位16bit:垂直座標 下位16bit:水平座標
-		oteMessage_TIMER_UPDATE = 0x0203,	// eGEMSG_TIMER_UPDATE   wParam タイマーID
-		oteMessage_BUTTON_DOWN = 0x0204,	// eGEMSG_BUTTON_DOWN    wParam ウィジェット ID
-		oteMessage_BUTTON_CLICK = 0x0205,	// eGEMSG_BUTTON_CLICK   wParam ウィジェット ID
-		oteMessage_LISTITEM_DOWN = 0x0206,	// eGEMSG_LISTITEM_DOWN  wParam ウィジェット ID dwParam 上位16bit:行番号 下位 16bit:アイテム番号
-		oteMessage_LISTBAR_DOWN = 0x0207,	// eGEMSG_LISTBAR_DOWN   wParam ウィジェット ID dwParam                  下位16bit:スクロールバーコマンド
-		oteMessage_MENUITEM_DOWN = 0x0208,	// eGEMSG_MENUITEM_DOWN  wParam ウィジェット ID dwParam メニューアイテム番号
-		oteMessage_USEREVENT = 0x0209,		// eGEMSG_USEREVENT      wParam イベントID(eGE_EVENT_ID) dwParam カスタム引数
-		// WaitEvent   S<-C
-		oteWaitEvent_AppInitialize = 0x0301,	// GE_VOID UGtAppInitialize(GE_VOID);
-		oteWaitEvent_AppFinalize = 0x0302,		// GE_VOID UGtAppFinalize(GE_VOID);
-		oteWaitEvent_StageEnter = 0x0303,		// GE_VOID UGtStageEnter(GE_ID eStageID);
-		oteWaitEvent_StageExit = 0x0304,		// GE_VOID UGtStageExit(GE_ID eStageID);
-		oteWaitEvent_LayerRender = 0x0305,		// GE_BOOL UGtLayerRender(HTARGET hTarget, GE_ID eLayerID);
-		oteWaitEvent_WidgetRender = 0x0306, 	// GE_BOOL UGtWidgetRender(HTARGET hTarget, GE_POINT sOffset, GE_ID eWidgetID);
-		// WaitMessage S<-C
-		oteWaitMessage_MOUSEDOWN = 0x0401,		// eGEMSG_MOUSEDOWN                             dwParam 上位16bit:垂直座標 下位16bit:水平座標
-		oteWaitMessage_MOUSEUP = 0x0402,		// eGEMSG_MOUSEUP                               dwParam 上位16bit:垂直座標 下位16bit:水平座標
-		oteWaitMessage_TIMER_UPDATE = 0x0403,	// eGEMSG_TIMER_UPDATE   wParam タイマーID
-		oteWaitMessage_BUTTON_DOWN = 0x0404,	// eGEMSG_BUTTON_DOWN    wParam ウィジェット ID
-		oteWaitMessage_BUTTON_CLICK = 0x0405,	// eGEMSG_BUTTON_CLICK   wParam ウィジェット ID
-		oteWaitMessage_LISTITEM_DOWN = 0x0406,	// eGEMSG_LISTITEM_DOWN  wParam ウィジェット ID dwParam 上位16bit:行番号 下位 16bit:アイテム番号
-		oteWaitMessage_LISTBAR_DOWN = 0x0407,	// eGEMSG_LISTBAR_DOWN   wParam ウィジェット ID dwParam                  下位16bit:スクロールバーコマンド
-		oteWaitMessage_MENUITEM_DOWN = 0x0408,	// eGEMSG_MENUITEM_DOWN  wParam ウィジェット ID dwParam メニューアイテム番号
-		oteWaitMessage_USEREVENT = 0x0409,		// eGEMSG_USEREVENT      wParam イベントID(eGE_EVENT_ID) dwParam カスタム引数
+		opeMOUSEDOWN = 0x0201,			// eGEMSG_MOUSEDOWN                             dwParam 上位16bit:垂直座標 下位16bit:水平座標
+		opeMOUSEUP = 0x0202,			// eGEMSG_MOUSEUP                               dwParam 上位16bit:垂直座標 下位16bit:水平座標
+		opeTIMER_UPDATE = 0x0203,		// eGEMSG_TIMER_UPDATE   wParam タイマーID
+		opeBUTTON_DOWN = 0x0204,		// eGEMSG_BUTTON_DOWN    wParam ウィジェット ID
+		opeBUTTON_CLICK = 0x0205,		// eGEMSG_BUTTON_CLICK   wParam ウィジェット ID
+		opeLISTITEM_DOWN = 0x0206,		// eGEMSG_LISTITEM_DOWN  wParam ウィジェット ID dwParam 上位16bit:行番号 下位 16bit:アイテム番号
+		opeLISTBAR_DOWN = 0x0207,		// eGEMSG_LISTBAR_DOWN   wParam ウィジェット ID dwParam                  下位16bit:スクロールバーコマンド
+		opeMENUITEM_DOWN = 0x0208,		// eGEMSG_MENUITEM_DOWN  wParam ウィジェット ID dwParam メニューアイテム番号
+		opeUSEREVENT = 0x0209,			// eGEMSG_USEREVENT      wParam イベントID(eGE_EVENT_ID) dwParam カスタム引数
 		// WaitFlag    S<-C
-		oteWaitFlag = 0x0501,					// Wati flag	ウィジェット ID mask  value
+		//opeWaitFlag = 0x0501,					// Wati flag	ウィジェット ID mask  value
 	};
 
 	/*	<summary>対象型列挙型</summary>
 	*/
 	enum TargetTypeEnum {
-		tteNothing = 0,
+		tteNoTarget = 0,
 		tteBITMAP = 1,		// eGE_BITMAP_ID
 		tteFONT = 2,		// eGE_FONT_ID
 		tteSTRING = 3,		// eGE_STRING_ID

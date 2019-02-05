@@ -17,10 +17,11 @@ GEALのUIテストをPCとの通信で行います。<br/>
 +-------------------+  +-------------------------+
 ~~~
 
-## フォルダ構成
+## 1.フォルダ構成
 
-このレポジトリでは、サンプルアプリケーション(C:\GEAL\projects\SampleDev)に GEALTest Server を組み込みます。
-
+ここでは、サンプルアプリケーション(C:\GEAL\projects\SampleDev)に GEALTest Server を組み込みます。<br/>
+対象ハードウェアは Windows 10 で WinSock2 を使っています。<br/>
+対象ハードウェアに合せて GtUDPPort.c を書き換えてください。
 ~~~
   root
   +-Application          サンプルアプリケーションのソース
@@ -44,13 +45,14 @@ GEALのUIテストをPCとの通信で行います。<br/>
   +-TestProject          Test Project
 ~~~
 
-## 使用リソース
+## 2.使用リソース
 
 GEALTest は GEAL Timer API で ID:7 のタイマーを使います。
 
-## Target Project 修正部分
+## 3.Target Project 修正部分
 
-Visual Studio プロジェクトのプロパティに以下を追加してください。
+### 3-1.Visual Studio プロジェクトのプロパティに以下を追加してください。
+
 * インクルード: 「構成プロパティ」「C/C++」「全般」「追加のインクルード ディレクトリ」
   * ./GEALTestServer;C:\Program Files (x86)\Windows Kits\10\Include\10.0.17134.0\um;
 * プリプロセッサ: 「構成プロパティ」「C/C++」「プリプロセッサ」「プリプロセッサの定義」
@@ -58,7 +60,7 @@ Visual Studio プロジェクトのプロパティに以下を追加してくだ
 * ライブラリ: 「構成プロパティ」「リンカー」「入力」「追加の依存ファイル」
   * C:\Program Files (x86)\Windows Kits\10\Lib\10.0.17134.0\um\x86\WS2_32.Lib;
 
-GEAL Target API を変更してください。
+### 3-2.GEAL Target API を変更してください。
 ~~~
 SampleDev.c        サンプルアプリケーション
   #include <GtEvent.h> を追加
@@ -67,11 +69,10 @@ SampleDev.c        サンプルアプリケーション
   UGxStageEnter()     -> UGtStageEnter()
   UGxStageExit()      -> UGtStageExit()
   UGxLayerRender()    -> UGtLayerRender()
-  UGtWidgetRender()   -> UGtWidgetRender()
+  UGxWidgetRender()   -> UGtWidgetRender()
 ~~~
 
-動作オプションの指定を追加してください。
-
+### 3-3.動作オプションの指定を追加してください。
 ~~~
 SampleDev.c        サンプルアプリケーション
   #include <GtOptions.h>
@@ -89,12 +90,12 @@ SampleDev.c        サンプルアプリケーション
   }
 ~~~
 
-## Test Project 修正部分
+## 4.Test Project の準備
 
 GEAL Editor 出力リソースファイルの GealRsxEnum.h をコピーして C# 用に書き換えて下さい。<br/>
-Application/GealRsxEnum.cs<br/>
-<br/>
-重複インクルード対策を名前空間に変更してください。
+Application/GealRsxEnum.cs
+
+### 4-1.重複インクルード対策を名前空間に変更してください。
 * 修正前
 ~~~
 #ifndef _INC_GEAL_RSXENUM_H
@@ -104,13 +105,13 @@ Application/GealRsxEnum.cs<br/>
 ~~~
 * 修正後
 ~~~
-namespace TestProject
+namespace GealRsxEnum
 {
   ：
 }
 ~~~
 
-列挙型を C# 用に変更してください。
+### 4-2.列挙型を C# 用に変更してください。
 * 修正前
 ~~~
 typedef enum _eGE_BITMAP_ID { ... } eGE_BITMAP_ID;
@@ -134,7 +135,7 @@ enum eGE_STAGE_ID { ... }
 enum eGE_LAYER_ID { ... }
 ~~~
 
-Widget ID の定数定義を C# の列挙定義に変更してください。
+### 4-3.Widget ID の定数定義を C# の列挙定義に変更してください。
 * 修正前
 ~~~
 typedef unsigned int eGE_WIDGET_ID;
