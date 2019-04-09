@@ -48,7 +48,7 @@ root
   | +-UDPPort.cs         UDP通信機能
   | +-GEALTestClient.csproj GEALTest Client プロジェクト
   +-TestProject          Test Project
-  | +-MainClass.cs       メインクラス
+  | +-Command.cs         コマンド処理
   | +-TestSample.cs      テストプログラムのサンプル
   | +-TestProject.csproj Test Project ファイル
   +-GEALTest.sln         GEAL Test ソリューション
@@ -187,8 +187,8 @@ enum eGE_WIDGET_ID
 ### 5-1.テストプログラムの記録
 
 * a) Test Project を記録モードで起動します。
-* b) Target Project を起動します。
   * TestProject -record TestScreen.cs
+* b) Target Project を起動します。
 * c) Target Project を操作します。
 * d) 操作が終了したら、Test Project を Ctrl+C キーで終了します。
 * e) 記録したテストプログラム TestScreen.cs を Test Project に追加します。
@@ -209,9 +209,9 @@ TestSample.TestRun()
 ### 5-2.テストプログラムの実行
 
 * a) Test Project を実行モードで起動します。
-* b) Target Project を起動します。
-  * TestProject -run
-
+* * TestProject -run
+b) Target Project を起動します。
+  
 ~~~
 C:\TestProject>TestProject -run
 GEALTestClient 1.0.0.0  server localhost:29767  client localhost:21575
@@ -235,4 +235,4 @@ Result 1/3
 
 ## 6.バージョン
 
-### 2019-04-00 1.0.0.0 最初のリリース
+### 2019-04-10 1.0.0.0 最初のリリース
