@@ -129,14 +129,14 @@ namespace GEALTest
             {
                 receive_data = udp.EndReceive(ar, ref from);
             }
-            catch (SocketException ex)
+            catch (SocketException)
             {
-                Console.WriteLine("_receiveCallback(): 受信エラー({0}/{1})", ex.Message, ex.ErrorCode);
+//                Console.WriteLine("_receiveCallback(): 受信エラー({0}/{1})", ex.Message, ex.ErrorCode);
             }
-            catch (ObjectDisposedException ex)
+            catch (ObjectDisposedException)
             {
                 // すでに閉じている時は終了
-                Console.WriteLine("_receiveCallback(): {0}は閉じられています。", ex.ObjectName);
+//                Console.WriteLine("_receiveCallback(): {0}は閉じられています。", ex.ObjectName);
                 this._client = null;
             }
             if (receive_data.Length > 0)

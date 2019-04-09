@@ -6,7 +6,7 @@ using System.Linq;
 /// <author>
 /// Copyright (C) 2018 suzukimitsuru, on MIT Licensed.
 /// </author>
-namespace GEALTest
+namespace GEALTest.Request
 {
     /// <summary>
     /// 操作型列挙型
@@ -47,7 +47,7 @@ namespace GEALTest
 		tteBORDER = 6,		// eGE_BORDER_ID
 		tteSTAGE = 7,		// eGE_STAGE_ID
 		tteLAYER = 8,		// eGE_LAYER_ID
-        tteWIDGET = 9,		// eWGTID_*
+        tteWIDGET = 9,		// eGE_WIDGET_ID
 	};
 
    /// <summary>
@@ -63,10 +63,10 @@ namespace GEALTest
     /// </summary>
     public class RequestFactory
     {
-        private TargetToString targetToString;
+        internal static TargetToString targetToString;
         public RequestFactory(TargetToString targetToString)
         {
-            this.targetToString = targetToString;
+            RequestFactory.targetToString = targetToString;
         }
         public RequestBase GetRequest(byte[] received)
         {
@@ -78,19 +78,19 @@ namespace GEALTest
                 {
                     case (ushort)OperationEnum.UGxAppInitialize: result = new UGxAppInitialize(received); break;
                     case (ushort)OperationEnum.UGxAppFinalize: result = new UGxAppFinalize(); break;
-                    case (ushort)OperationEnum.UGxStageEnter: result = new UGxStageEnter(this.targetToString, received); break;
-                    case (ushort)OperationEnum.UGxStageExit: result = new UGxStageExit(this.targetToString, received); break;
-                    case (ushort)OperationEnum.UGxLayerRender: result = new UGxLayerRender(this.targetToString, received); break;
-                    case (ushort)OperationEnum.UGxWidgetRender: result = new UGxWidgetRender(this.targetToString, received); break;
+                    case (ushort)OperationEnum.UGxStageEnter: result = new UGxStageEnter(received); break;
+                    case (ushort)OperationEnum.UGxStageExit: result = new UGxStageExit(received); break;
+                    case (ushort)OperationEnum.UGxLayerRender: result = new UGxLayerRender(received); break;
+                    case (ushort)OperationEnum.UGxWidgetRender: result = new UGxWidgetRender(received); break;
                     case (ushort)OperationEnum.eGEMSG_MOUSEDOWN: result = new MouseDown(received); break;
                     case (ushort)OperationEnum.eGEMSG_MOUSEUP: result = new MouseUp(received); break;
-                    case (ushort)OperationEnum.eGEMSG_TIMER_UPDATE: result = new TimerUpdate(received); break;
-                    case (ushort)OperationEnum.eGEMSG_BUTTON_DOWN: result = new ButtonDown(this.targetToString, received); break;
-                    case (ushort)OperationEnum.eGEMSG_BUTTON_CLICK: result = new ButtonClick(this.targetToString, received); break;
-                    case (ushort)OperationEnum.eGEMSG_LISTITEM_DOWN: result = new ListItemDown(this.targetToString, received); break;
-                    case (ushort)OperationEnum.eGEMSG_LISTBAR_DOWN: result = new ListBarDown(this.targetToString, received); break;
-                    case (ushort)OperationEnum.eGEMSG_MENUITEM_DOWN: result = new MenuItemDown(this.targetToString, received); break;
-                    case (ushort)OperationEnum.eGEMSG_USEREVENT: result = new UserEvent(this.targetToString, received); break;
+                    case (ushort)OperationEnum.eGEMSG_TIMER_UPDATE: result = new eGEMSG_TIMER_UPDATE(received); break;
+                    case (ushort)OperationEnum.eGEMSG_BUTTON_DOWN: result = new eGEMSG_BUTTON_DOWN(received); break;
+                    case (ushort)OperationEnum.eGEMSG_BUTTON_CLICK: result = new eGEMSG_BUTTON_CLICK(received); break;
+                    case (ushort)OperationEnum.eGEMSG_LISTITEM_DOWN: result = new ListItemDown(received); break;
+                    case (ushort)OperationEnum.eGEMSG_LISTBAR_DOWN: result = new ListBarDown(received); break;
+                    case (ushort)OperationEnum.eGEMSG_MENUITEM_DOWN: result = new MenuItemDown(received); break;
+                    case (ushort)OperationEnum.eGEMSG_USEREVENT: result = new UserEvent(received); break;
                     default: result = analize; break;
                 }
             }
@@ -127,7 +127,11 @@ namespace GEALTest
             return (target != null) 
                 && (this.operation == target.operation);
         }
-        virtual public byte[] GetBytes()
+        public virtual bool Likes(RequestBase obj)
+        {
+            return this.Equals(obj);
+        }
+        public virtual byte[] GetBytes()
         {
             var length = 3 - 1;
             var operation = (int)this.operation;
@@ -137,9 +141,54 @@ namespace GEALTest
                 (byte)((operation >> 8) & 0xff),
             };
         }
-        virtual public string ToLogText()
+        protected string OperationString { get { return ((OperationEnum)this.operation).ToString(); } }
+        public virtual string ToLogText()
         {
-            return string.Format("{0}();", this.operation.ToString());
+            return string.Format("{0}()", this.OperationString);
+        }
+        public bool IsEvent { get {
+                var result = false;
+                switch ((OperationEnum)this.operation)
+                {
+                    case OperationEnum.UGxAppInitialize:
+                    case OperationEnum.UGxAppFinalize:
+                    case OperationEnum.UGxStageEnter:
+                    case OperationEnum.UGxStageExit:
+                    case OperationEnum.UGxLayerRender:
+                    case OperationEnum.UGxWidgetRender:
+                        result = true;
+                        break;
+                    default:
+                        result = false;
+                        break;
+                }
+                return result;
+            } }
+        public bool IsMessage
+        {
+            get
+            {
+                var result = false;
+                switch ((OperationEnum)this.operation)
+                {
+                    case OperationEnum.eGEMSG_MOUSEDOWN:
+                    case OperationEnum.eGEMSG_MOUSEUP:
+                    case OperationEnum.eGEMSG_TIMER_UPDATE:
+                    case OperationEnum.eGEMSG_BUTTON_DOWN:
+                    case OperationEnum.eGEMSG_BUTTON_CLICK:
+                    case OperationEnum.eGEMSG_LISTITEM_DOWN:
+                    case OperationEnum.eGEMSG_LISTBAR_DOWN:
+                    case OperationEnum.eGEMSG_MENUITEM_DOWN:
+                    case OperationEnum.eGEMSG_USEREVENT:
+
+                        result = true;
+                        break;
+                    default:
+                        result = false;
+                        break;
+                }
+                return result;
+            }
         }
     }
 
@@ -147,32 +196,34 @@ namespace GEALTest
     /// 対象要求
     /// </summary>
     public class RequestTarget : RequestBase {
-        protected TargetToString targetToString;
 
+        /// <summary>
+        /// 対象型
+        /// </summary>
 		private byte targetType;
 		public byte TargetType { get { return this.targetType; } set { this.targetType = value; } }
 
+        /// <summary>
+        /// 対象ID
+        /// </summary>
 		private ushort targetId;
 		public ushort TargetId { get { return this.targetId; } set { this.targetId = value; } }
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        /// <param name="targetToString">対象を文字列に変換</param>
         /// <param name="operation">操作</param>
         /// <param name="targetType">対象型</param>
         /// <param name="targetId">対象ID</param>
-        public RequestTarget(TargetToString targetToString, ushort operation, byte targetType, ushort targetId)
+        public RequestTarget(ushort operation, byte targetType, ushort targetId)
             : base (operation)
         {
-            this.targetToString = targetToString;
             this.targetType = targetType;
             this.targetId = targetId;
         }
-        public RequestTarget(TargetToString targetToString, byte[] request)
+        public RequestTarget(byte[] request)
             : base(request)
         {
-            this.targetToString = targetToString;
             if (request.Length >= 6)
             {
                 int bytes = request[0];
@@ -183,6 +234,7 @@ namespace GEALTest
                 }
             }
         }
+        protected string TargetName { get { return RequestFactory.targetToString(this.targetType, this.targetId); } }
         public override int GetHashCode()
         {
             return base.GetHashCode();
@@ -194,6 +246,11 @@ namespace GEALTest
                 && (this.targetType == target.targetType)
                 && (this.targetId == target.targetId);
 
+        }
+        public override bool Likes(RequestBase obj)
+        {
+            var target = obj as RequestTarget;
+            return base.Likes(obj) && ((target != null) && (this.TargetType == target.TargetType));
         }
         public override byte[] GetBytes()
         {
@@ -211,7 +268,7 @@ namespace GEALTest
         }
         public override string ToLogText()
         {
-            return string.Format("{0}({1});", this.Operation.ToString(), this.targetToString(this.TargetType, this.TargetId));
+            return string.Format("{0}({1})", this.OperationString, this.TargetName);
         }
     }
 
@@ -225,18 +282,17 @@ namespace GEALTest
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        /// <param name="targetToString">対象を文字列に変換</param>
         /// <param name="operation">操作</param>
         /// <param name="targetType">対象型</param>
         /// <param name="targetId">対象ID</param>
         /// <param name="parameter">引数</param>
-        public RequestParameter(TargetToString targetToString, ushort operation, byte targetType, ushort targetId, uint parameter) 
-            : base(targetToString, operation, targetType, targetId)
+        public RequestParameter(ushort operation, byte targetType, ushort targetId, uint parameter) 
+            : base(operation, targetType, targetId)
         {
             this.parameter = parameter;
         }
-        public RequestParameter(TargetToString targetToString, byte[] request)
-            : base(targetToString, request)
+        public RequestParameter(byte[] request)
+            : base(request)
         {
             if (request.Length >= (6 + 4))
             {
@@ -257,6 +313,11 @@ namespace GEALTest
             return base.Equals(target)
                 && (this.parameter == target.parameter);
         }
+        public override bool Likes(RequestBase obj)
+        {
+            var parameter = obj as RequestParameter;
+            return base.Likes(obj) && ((parameter != null) && (this.TargetId == parameter.TargetId));
+        }
         public override byte[] GetBytes()
         {
             var base_bytes = base.GetBytes();
@@ -270,9 +331,7 @@ namespace GEALTest
         }
         public override string ToLogText()
         {
-            return string.Format("{0}({1}, 0x{2:X8});",
-                this.Operation.ToString(), this.targetToString(this.TargetType, this.TargetId),
-                this.Parameter);
+            return string.Format("{0}({1}, 0x{2:X8})", this.OperationString, this.TargetName, this.Parameter);
         }
     }
 
@@ -282,12 +341,12 @@ namespace GEALTest
     }
     public class UGxAppInitialize : RequestParameter
     {
-        public UGxAppInitialize(byte[] request) : base(null, request) { }
+        public UGxAppInitialize(byte[] request) : base(request) { }
         public UGxAppInitialize(uint version)
-        : base(null, (ushort)OperationEnum.UGxAppInitialize, (byte)TargetTypeEnum.tteNothing, 0, version) { }
+        : base((ushort)OperationEnum.UGxAppInitialize, (byte)TargetTypeEnum.tteNothing, 0, version) { }
         public override string ToLogText()
         {
-            return string.Format("{0}();\t// Version={1}", this.Operation.ToString(), this.Parameter.ToString());
+            return string.Format("{0}({1})", this.OperationString, this.Parameter.ToString());
         }
     }
     public class UGxAppFinalize : RequestBase
@@ -296,113 +355,113 @@ namespace GEALTest
     }
     public class UGxStageEnter : RequestTarget
     {
-        public UGxStageEnter(TargetToString targetToString, byte[] request) : base(targetToString, request) { }
-        public UGxStageEnter(TargetToString targetToString, ushort stageId)
-            : base(targetToString, (ushort)OperationEnum.UGxStageEnter, (byte)TargetTypeEnum.tteSTAGE, stageId) { }
+        public UGxStageEnter(byte[] request) : base(request) { }
+        public UGxStageEnter(ushort stageId)
+            : base((ushort)OperationEnum.UGxStageEnter, (byte)TargetTypeEnum.tteSTAGE, stageId) { }
     }
     public class UGxStageExit : RequestTarget
     {
-        public UGxStageExit(TargetToString targetToString, byte[] request) : base(targetToString, request) { }
-        public UGxStageExit(TargetToString targetToString, ushort stageId)
-            : base(targetToString, (ushort)OperationEnum.UGxStageExit, (byte)TargetTypeEnum.tteSTAGE, stageId) { }
+        public UGxStageExit(byte[] request) : base(request) { }
+        public UGxStageExit(ushort stageId)
+            : base((ushort)OperationEnum.UGxStageExit, (byte)TargetTypeEnum.tteSTAGE, stageId) { }
     }
     public class UGxLayerRender : RequestTarget
     {
-        public UGxLayerRender(TargetToString targetToString, byte[] request) : base(targetToString, request) { }
-        public UGxLayerRender(TargetToString targetToString, ushort layerId)
-             : base(targetToString, (ushort)OperationEnum.UGxLayerRender, (byte)TargetTypeEnum.tteLAYER, layerId) { }
+        public UGxLayerRender(byte[] request) : base(request) { }
+        public UGxLayerRender(ushort layerId)
+             : base((ushort)OperationEnum.UGxLayerRender, (byte)TargetTypeEnum.tteLAYER, layerId) { }
     }
     public class UGxWidgetRender : RequestParameter
     {
-        public UGxWidgetRender(TargetToString targetToString, byte[] request) : base(targetToString, request) { }
-        public UGxWidgetRender(TargetToString targetToString, ushort widgetId, ushort x, ushort y)
-        : base(targetToString, (ushort)OperationEnum.UGxWidgetRender, (byte)TargetTypeEnum.tteWIDGET, widgetId, (uint)(y << 16) | x) { }
+        public UGxWidgetRender(byte[] request) : base(request) { }
+        public UGxWidgetRender(ushort widgetId, ushort x, ushort y)
+        : base((ushort)OperationEnum.UGxWidgetRender, (byte)TargetTypeEnum.tteWIDGET, widgetId, (uint)(y << 16) | x) { }
         public override string ToLogText()
         {
-            return string.Format("{0}({1}, GE_POINT(x={2}, y={3}));", 
-                this.Operation.ToString(), this.targetToString(this.TargetType, this.TargetId), 
+            return string.Format("{0}({1}, x:{2}, y:{3})",
+                this.OperationString, this.TargetName, 
                 (this.Parameter >> 0) & 0xFFFF, (this.Parameter >> 16) & 0xFFFF);
         }
     }
     public class MouseDown : RequestParameter
     {
-        public MouseDown(byte[] request) : base(null, request) { }
+        public MouseDown(byte[] request) : base(request) { }
         public MouseDown(ushort x, ushort y)
-        : base(null, (ushort)OperationEnum.eGEMSG_MOUSEDOWN, (byte)TargetTypeEnum.tteNothing, 0, (uint)(y << 16) | x) { }
+        : base((ushort)OperationEnum.eGEMSG_MOUSEDOWN, (byte)TargetTypeEnum.tteNothing, 0, (uint)(y << 16) | x) { }
         public override string ToLogText()
         {
-            return string.Format("{0}(x={1}, y={2});", this.Operation.ToString(),
+            return string.Format("{0}(x:{1}, y:{2})", this.OperationString,
                 (this.Parameter >> 0) & 0xFFFF, (this.Parameter >> 16) & 0xFFFF);
         }
     }
     public class MouseUp : RequestParameter
     {
-        public MouseUp(byte[] request) : base(null, request) { }
+        public MouseUp(byte[] request) : base(request) { }
         public MouseUp(ushort x, ushort y)
-        : base(null, (ushort)OperationEnum.eGEMSG_MOUSEUP, (byte)TargetTypeEnum.tteNothing, 0, (uint)(y << 16) | x) { }
+        : base((ushort)OperationEnum.eGEMSG_MOUSEUP, (byte)TargetTypeEnum.tteNothing, 0, (uint)(y << 16) | x) { }
         public override string ToLogText()
         {
-            return string.Format("{0}(x={1}, y={2});", this.Operation.ToString(),
+            return string.Format("{0}(x:{1}, y:{2})", this.OperationString,
                 (this.Parameter >> 0) & 0xFFFF, (this.Parameter >> 16) & 0xFFFF);
         }
     }
-    public class TimerUpdate : RequestTarget
+    public class eGEMSG_TIMER_UPDATE : RequestTarget
     {
-        public TimerUpdate(byte[] request) : base(null, request) { }
-        public TimerUpdate(ushort timerId)
-            : base(null, (ushort)OperationEnum.eGEMSG_TIMER_UPDATE, (byte)TargetTypeEnum.tteNothing, timerId) { }
+        public eGEMSG_TIMER_UPDATE(byte[] request) : base(request) { }
+        public eGEMSG_TIMER_UPDATE(ushort timerId)
+            : base((ushort)OperationEnum.eGEMSG_TIMER_UPDATE, (byte)TargetTypeEnum.tteNothing, timerId) { }
         public override string ToLogText()
         {
-            return string.Format("{0}({1});", this.Operation.ToString(), this.TargetId);
+            return string.Format("{0}({1})", this.OperationString, this.TargetId);
         }
     }
-    public class ButtonDown : RequestTarget
+    public class eGEMSG_BUTTON_DOWN : RequestTarget
     {
-        public ButtonDown(TargetToString targetToString, byte[] request) : base(targetToString, request) { }
-        public ButtonDown(TargetToString targetToString, ushort widgetId)
-            : base(targetToString, (ushort)OperationEnum.eGEMSG_BUTTON_DOWN, (byte)TargetTypeEnum.tteWIDGET, widgetId) { }
+        public eGEMSG_BUTTON_DOWN(byte[] request) : base(request) { }
+        public eGEMSG_BUTTON_DOWN(ushort widgetId)
+            : base((ushort)OperationEnum.eGEMSG_BUTTON_DOWN, (byte)TargetTypeEnum.tteWIDGET, widgetId) { }
     }
-    public class ButtonClick : RequestTarget
+    public class eGEMSG_BUTTON_CLICK : RequestTarget
     {
-        public ButtonClick(TargetToString targetToString, byte[] request) : base(targetToString, request) { }
-        public ButtonClick(TargetToString targetToString, ushort widgetId)
-            : base(targetToString, (ushort)OperationEnum.eGEMSG_BUTTON_CLICK, (byte)TargetTypeEnum.tteWIDGET, widgetId) { }
+        public eGEMSG_BUTTON_CLICK(byte[] request) : base(request) { }
+        public eGEMSG_BUTTON_CLICK(ushort widgetId)
+            : base((ushort)OperationEnum.eGEMSG_BUTTON_CLICK, (byte)TargetTypeEnum.tteWIDGET, widgetId) { }
     }
     public class ListItemDown : RequestParameter
     {
-        public ListItemDown(TargetToString targetToString, byte[] request) : base(targetToString, request) { }
-        public ListItemDown(TargetToString targetToString, ushort widgetId, ushort line, ushort item)
-        : base(targetToString, (ushort)OperationEnum.eGEMSG_LISTITEM_DOWN, (byte)TargetTypeEnum.tteWIDGET, widgetId, (uint)(line << 16) | item) { }
+        public ListItemDown(byte[] request) : base(request) { }
+        public ListItemDown(ushort widgetId, ushort line, ushort item)
+        : base((ushort)OperationEnum.eGEMSG_LISTITEM_DOWN, (byte)TargetTypeEnum.tteWIDGET, widgetId, (uint)(line << 16) | item) { }
         public override string ToLogText()
         {
-            return string.Format("{0}({1}, line={2}, item={3});",
-                this.Operation.ToString(), this.targetToString(this.TargetType, this.TargetId),
+            return string.Format("{0}({1}, line:{2}, item:{3})",
+                this.OperationString, this.TargetName,
                 (this.Parameter >> 0) & 0xFFFF, (this.Parameter >> 16) & 0xFFFF);
         }
     }
     public class ListBarDown : RequestParameter
     {
-        public ListBarDown(TargetToString targetToString, byte[] request) : base(targetToString, request) { }
-        public ListBarDown(TargetToString targetToString, ushort widgetId, ushort command)
-        : base(targetToString, (ushort)OperationEnum.eGEMSG_LISTBAR_DOWN, (byte)TargetTypeEnum.tteWIDGET, widgetId, command) { }
+        public ListBarDown(byte[] request) : base(request) { }
+        public ListBarDown(ushort widgetId, ushort command)
+        : base((ushort)OperationEnum.eGEMSG_LISTBAR_DOWN, (byte)TargetTypeEnum.tteWIDGET, widgetId, command) { }
         public override string ToLogText()
         {
-            return string.Format("{0}({1}, command={3});",
-                this.Operation.ToString(), this.targetToString(this.TargetType, this.TargetId),
+            return string.Format("{0}({1}, command:{3})",
+                this.OperationString, this.TargetName,
                 (this.Parameter >> 0) & 0xFFFF, (this.Parameter >> 16) & 0xFFFF);
         }
     }
     public class MenuItemDown : RequestParameter
     {
-        public MenuItemDown(TargetToString targetToString, byte[] request) : base(targetToString, request) { }
-        public MenuItemDown(TargetToString targetToString, ushort widgetId, uint parameter)
-        : base(targetToString, (ushort)OperationEnum.eGEMSG_MENUITEM_DOWN, (byte)TargetTypeEnum.tteWIDGET, widgetId, parameter) { }
+        public MenuItemDown(byte[] request) : base(request) { }
+        public MenuItemDown(ushort widgetId, uint parameter)
+        : base((ushort)OperationEnum.eGEMSG_MENUITEM_DOWN, (byte)TargetTypeEnum.tteWIDGET, widgetId, parameter) { }
     }
     public class UserEvent : RequestParameter
     {
-        public UserEvent(TargetToString targetToString, byte[] request) : base(targetToString, request) { }
-        public UserEvent(TargetToString targetToString, ushort eventId, uint parameter)
-        : base(targetToString, (ushort)OperationEnum.eGEMSG_USEREVENT, (byte)TargetTypeEnum.tteEVENT, eventId, parameter) { }
+        public UserEvent(byte[] request) : base(request) { }
+        public UserEvent(ushort eventId, uint parameter)
+        : base((ushort)OperationEnum.eGEMSG_USEREVENT, (byte)TargetTypeEnum.tteEVENT, eventId, parameter) { }
     }
     /*	 1:	eWGTIDRECT  0x2000  * Widget Rect
 		 2:	eWGTIDTEXT  0x3000  * Widget Text

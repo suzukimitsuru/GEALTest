@@ -46,8 +46,9 @@
     <Compile Include="..\Application\GealRsxEnum.cs">
       <Link>GealRsxEnum.cs</Link>
     </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="Command.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestSample.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
