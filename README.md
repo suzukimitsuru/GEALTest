@@ -210,7 +210,7 @@ TestSample.TestRun()
 
 * a) Test Project を実行モードで起動します。
 * * TestProject -run
-b) Target Project を起動します。
+* b) Target Project を起動します。
   
 ~~~
 C:\TestProject>TestProject -run
